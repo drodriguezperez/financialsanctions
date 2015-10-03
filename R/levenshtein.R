@@ -77,8 +77,8 @@ levenshtein_distance <- function(str_1, str_2) {
 #' Calculate the similarity for two strings \code{str_1} and \code{str_2} based
 #' on the Levenshtein distance
 #'
-#' @param str_1 first string for calculating the distance
-#' @param str_2 second string for calculating the distance
+#' @param str_1 first string for calculating the similarity
+#' @param str_2 second string for calculating the similarity
 #'
 #' @return the similarity based on the Levenshtein distance between the
 #'         specified strings

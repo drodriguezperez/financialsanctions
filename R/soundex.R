@@ -151,3 +151,25 @@ soundex_difference <- function(str_1, str_2) {
 
   return(result)
 }
+
+#' Calculate the similarity based on the Soundex distance
+#'
+#' Calculate the similarity for two strings \code{str_1} and \code{str_2} based
+#' on the Soundex distance
+#'
+#' @param str_1 first string for calculating the similarity
+#' @param str_2 second string for calculating the similarity
+#'
+#' @return the similarity based on the Soundex distance between the specified
+#'         strings
+#'
+#' @examples
+#' soundex('saturday', 'sunday')
+#'
+#' @author Daniel Rodriguez Perez
+#'
+#' @rdname soundex
+#' @export soundex
+soundex <- function(str_1, str_2) {
+  return(soundex_difference(str_1, str_2) / 4)
+}

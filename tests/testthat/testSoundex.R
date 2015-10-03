@@ -21,6 +21,8 @@
 
 context("Soundex distance tests")
 
+MAXERROR <- 1e-8
+
 test_that("calculation of Soundex code", {
   expect_that(soundex_code(''),          is_null())
   expect_that(soundex_code('Soundex'),   equals('S532'))
@@ -48,4 +50,14 @@ test_that("calculation of Soundex distance", {
   expect_that(soundex_difference('source',   'target'),   equals(2))
   expect_that(soundex_difference('ABCVWXYZ', 'CABVWXYZ'), equals(2))
   expect_that(soundex_difference('saturday', 'saturday'), equals(4))
+})
+
+test_that("calculation of Soundex distance", {
+  expect_that(soundex('car',      ''),         equals(0.000000000, tolerance = MAXERROR))
+  expect_that(soundex('car',      'cat'),      equals(0.500000000, tolerance = MAXERROR))
+  expect_that(soundex('kitten',   'sitting'),  equals(0.500000000, tolerance = MAXERROR))
+  expect_that(soundex('saturday', 'sunday'),   equals(0.750000000, tolerance = MAXERROR))
+  expect_that(soundex('source',   'target'),   equals(0.500000000, tolerance = MAXERROR))
+  expect_that(soundex('ABCVWXYZ', 'CABVWXYZ'), equals(0.500000000, tolerance = MAXERROR))
+  expect_that(soundex('saturday', 'saturday'), equals(1.000000000, tolerance = MAXERROR))
 })

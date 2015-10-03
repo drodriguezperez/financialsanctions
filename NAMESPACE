@@ -3,6 +3,7 @@
 export(jaroWinkler)
 export(levenshtein)
 export(levenshtein_distance)
+export(soundex)
 export(soundex_code)
 export(soundex_difference)
 import(stringr)
