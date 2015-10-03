@@ -13,7 +13,8 @@ jaroWinkler(str_1, str_2, weight_threshold = 0.7, num_chars = 4)
 
 \item{weight_threshold}{percent to apply the Winkler modification}
 
-\item{num_chars}{size of the prefix to be concidered by the Winkler modification}
+\item{num_chars}{size of the prefix to be concidered by the Winkler
+                 modification}
 }
 \value{
 the Jaro-Winkler distance between the specified strings
@@ -27,5 +28,18 @@ jaroWinkler('saturday', 'sunday')
 }
 \author{
 Daniel Rodriguez Perez
+}
+\references{
+M. A. Jaro, "Advances in record linkage methodology as applied to the 1985
+census of Tampa Florida." Journal of the American Statistical Association,
+vol. 84, no. 406, pp. 414-420, Jun. 1989.
+
+W. E. Winkler, "String Comparator Metrics and Enhanced Decision Rules in the
+Fellegi-Sunter Model of Record Linkage." Proceedings of the Section on
+Survey Research Methods (American Statistical Association), pp. 354-359,
+1990.
+
+M. A. Jaro, "Probabilistic linkage of large public health data file."
+Statistics in Medicine vol. 14, no. 5-7, pp. 491-498, March - April 1995.
 }
 
