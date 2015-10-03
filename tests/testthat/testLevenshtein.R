@@ -24,17 +24,19 @@ context("Levenshtein distance tests")
 MAXERROR <- 1e-8
 
 test_that("calculation of Levenshtein distance", {
-  expect_that(levenshtein('car',      ''),        equals(3))
-  expect_that(levenshtein('car',      'cat'),     equals(1))
-  expect_that(levenshtein('kitten',   'sitting'), equals(3))
-  expect_that(levenshtein('saturday', 'sunday'),  equals(3))
-  expect_that(levenshtein('source',   'target'),  equals(5))
+  expect_that(levenshtein_distance('car',      ''),         equals(3))
+  expect_that(levenshtein_distance('car',      'cat'),      equals(1))
+  expect_that(levenshtein_distance('kitten',   'sitting'),  equals(3))
+  expect_that(levenshtein_distance('saturday', 'sunday'),   equals(3))
+  expect_that(levenshtein_distance('source',   'target'),   equals(5))
+  expect_that(levenshtein_distance('ABCVWXYZ', 'CABVWXYZ'), equals(2))
 })
 
-test_that("calculation of Levenshtein distance", {
-  expect_that(levenshtein_similarity('car',      ''),        equals(0.000000000, tolerance = MAXERROR))
-  expect_that(levenshtein_similarity('car',      'cat'),     equals(0.666666667, tolerance = MAXERROR))
-  expect_that(levenshtein_similarity('kitten',   'sitting'), equals(0.571428571, tolerance = MAXERROR))
-  expect_that(levenshtein_similarity('saturday', 'sunday'),  equals(0.625000000, tolerance = MAXERROR))
-  expect_that(levenshtein_similarity('source',   'target'),  equals(0.166666667, tolerance = MAXERROR))
+test_that("calculation of Levenshtein similarity", {
+  expect_that(levenshtein('car',      ''),         equals(0.000000000, tolerance = MAXERROR))
+  expect_that(levenshtein('car',      'cat'),      equals(0.666666667, tolerance = MAXERROR))
+  expect_that(levenshtein('kitten',   'sitting'),  equals(0.571428571, tolerance = MAXERROR))
+  expect_that(levenshtein('saturday', 'sunday'),   equals(0.625000000, tolerance = MAXERROR))
+  expect_that(levenshtein('source',   'target'),   equals(0.166666667, tolerance = MAXERROR))
+  expect_that(levenshtein('ABCVWXYZ', 'CABVWXYZ'), equals(0.750000000, tolerance = MAXERROR))
 })

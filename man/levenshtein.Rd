@@ -2,7 +2,7 @@
 % Please edit documentation in R/levenshtein.R
 \name{levenshtein}
 \alias{levenshtein}
-\title{Calculate Levenshtein distance}
+\title{Calculate the similarity based on the Levenshtein distance}
 \usage{
 levenshtein(str_1, str_2)
 }
@@ -12,25 +12,17 @@ levenshtein(str_1, str_2)
 \item{str_2}{second string for calculating the distance}
 }
 \value{
-the Levenshtein distance of two strings
+the similarity based on the Levenshtein distance between the
+        specified strings
 }
 \description{
-Calculate Levenshtein distance for two strings str_1 and str_2
-}
-\details{
-The Levenshtein distance is the minimum number of operations required to
-transform one string into another. Operation is defined as either an
-insertion, deletion or substitution.
+Calculate the similarity for two strings \code{str_1} and \code{str_2} based
+on the Levenshtein distance
 }
 \examples{
 levenshtein('saturday', 'sunday')
 }
 \author{
 Daniel Rodriguez Perez
-}
-\references{
-"Levenshtein distance." Wikipedia: The Free Encyclopedia. Wikimedia
-Foundation, Inc., 27 Sep. 2015.
-<http://en.wikipedia.org/wiki/Levenshtein_distance>
 }
 

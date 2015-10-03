@@ -21,12 +21,12 @@
 
 #' Calculate Levenshtein distance
 #'
-#' Calculate Levenshtein distance for two strings str_1 and str_2
+#' Calculate Levenshtein distance for two strings \code{str_1} and \code{str_2}
 #'
 #' @param str_1 first string for calculating the distance
 #' @param str_2 second string for calculating the distance
 #'
-#' @return the Levenshtein distance of two strings
+#' @return the Levenshtein distance between the specified strings
 #'
 #' @details
 #' The Levenshtein distance is the minimum number of operations required to
@@ -34,7 +34,7 @@
 #' insertion, deletion or substitution.
 #'
 #' @examples
-#' levenshtein('saturday', 'sunday')
+#' levenshtein_distance('saturday', 'sunday')
 #'
 #' @references
 #' "Levenshtein distance." Wikipedia: The Free Encyclopedia. Wikimedia
@@ -43,9 +43,9 @@
 #'
 #' @author Daniel Rodriguez Perez
 #'
-#' @rdname levenshtein
-#' @export levenshtein
-levenshtein <- function(str_1, str_2) {
+#' @rdname levenshtein_distance
+#' @export levenshtein_distance
+levenshtein_distance <- function(str_1, str_2) {
   str_1 <- tolower(str_1)
   str_2 <- tolower(str_2)
 
@@ -72,25 +72,26 @@ levenshtein <- function(str_1, str_2) {
   return(current_row[length(current_row)])
 }
 
-#' Calculate the similarity of Levenshtein distance
+#' Calculate the similarity based on the Levenshtein distance
 #'
-#' Calculate the similarity of Levenshtein distance for two strings str_1 and
-#' str_2
+#' Calculate the similarity for two strings \code{str_1} and \code{str_2} based
+#' on the Levenshtein distance
 #'
 #' @param str_1 first string for calculating the distance
 #' @param str_2 second string for calculating the distance
 #'
-#' @return the similarity based on the Levenshtein distance of two strings
+#' @return the similarity based on the Levenshtein distance between the
+#'         specified strings
 #'
 #' @examples
-#' levenshtein_similarity('saturday', 'sunday')
+#' levenshtein('saturday', 'sunday')
 #'
 #' @author Daniel Rodriguez Perez
 #'
-#' @rdname levenshtein_similarity
-#' @export levenshtein_similarity
-levenshtein_similarity <- function(str_1, str_2) {
-  distance <- levenshtein(str_1, str_2)
+#' @rdname levenshtein
+#' @export levenshtein
+levenshtein <- function(str_1, str_2) {
+  distance   <- levenshtein_distance(str_1, str_2)
   similarity <- 1 - distance / max(str_length(str_1), str_length(str_2))
   return(similarity)
 }
