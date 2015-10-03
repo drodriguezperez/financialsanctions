@@ -1,0 +1,14 @@
+Package: FinancialSanctions
+Type: Package
+Title: Search coincidences in international financial sanctions lists
+Version: 0.0.1
+Date: 2015-10-03
+Author: Daniel Rodriguez Perez
+Maintainer: Daniel Rodriguez <daniel.rodriguez.perez@gmail.com>
+Description: This package allows download sanctions lists from different
+             sources and performs searches for coincidences using different
+             metrics.
+License: GPL-3
+Depends: stringr
+Suggests: testthat
+LazyData: TRUE
