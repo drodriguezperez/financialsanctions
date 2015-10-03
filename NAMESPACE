@@ -3,4 +3,5 @@
 export(jaroWinkler)
 export(levenshtein)
 export(levenshtein_distance)
+export(soundex_code)
 import(stringr)

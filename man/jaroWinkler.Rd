@@ -23,6 +23,12 @@ the Jaro-Winkler distance between the specified strings
 Calculate Jaro-Winkler distance for two strings \code{str_1} and
 \code{str_2}
 }
+\details{
+The Jaro-Winkler distance metric is a string edit distance. The Jaro-Winkler
+distance metric is designed and best suited for short strings such as person
+names. The score is normalized such that 0 equates to no similarity and 1 is
+an exact match.
+}
 \examples{
 jaroWinkler('saturday', 'sunday')
 }
