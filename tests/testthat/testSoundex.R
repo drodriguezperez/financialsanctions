@@ -21,7 +21,7 @@
 
 context("Soundex distance tests")
 
-test_that("calculation of Jaro-Winkler distances", {
+test_that("calculation of Soundex code", {
   expect_that(soundex_code(''),          is_null())
   expect_that(soundex_code('Soundex'),   equals('S532'))
   expect_that(soundex_code('car'),       equals('C600'))
@@ -38,5 +38,14 @@ test_that("calculation of Jaro-Winkler distances", {
   expect_that(soundex_code('Pfister'),   equals('P236'))
   expect_that(soundex_code('Jackson'),   equals('J250'))
   expect_that(soundex_code('Tymczak'),   equals('T522'))
+})
 
+test_that("calculation of Soundex distance", {
+  expect_that(soundex_difference('car',      ''),         equals(0))
+  expect_that(soundex_difference('car',      'cat'),      equals(2))
+  expect_that(soundex_difference('kitten',   'sitting'),  equals(2))
+  expect_that(soundex_difference('saturday', 'sunday'),   equals(3))
+  expect_that(soundex_difference('source',   'target'),   equals(2))
+  expect_that(soundex_difference('ABCVWXYZ', 'CABVWXYZ'), equals(2))
+  expect_that(soundex_difference('saturday', 'saturday'), equals(4))
 })

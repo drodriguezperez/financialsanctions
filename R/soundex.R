@@ -19,7 +19,7 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>
 ##
 
-#' Calculate the Soundex code for a string
+#' Calculate the Soundex code
 #'
 #' Calculate the Soundex code for a string
 #'
@@ -85,3 +85,69 @@ soundex_code <- function(string) {
   return(str_sub(result, 1, 4))
 }
 
+#' Calculate the Soundex difference
+#'
+#' Calculate the Soundex difference for two strings \code{str_1} and \code{str_2}
+#'
+#' @param str_1 first string for calculating the distance
+#' @param str_2 second string for calculating the distance
+#'
+#' @return an integer that indicates the difference between the Soundex codes
+#'
+#' @details
+#' The returned value is the number of characters in the Soundex values that
+#' are the same. The return value ranges from 0 through 4: 0 indicates weak or
+#' no similarity, and 4 indicates strong similarity or the same values.
+#'
+#' @examples
+#' soundex_difference('saturday', 'sunday')
+#'
+#' @author Daniel Rodriguez Perez
+#'
+#' @rdname soundex_difference
+#' @export soundex_difference
+soundex_difference <- function(str_1, str_2) {
+  if (str_length(str_1) == 0 || str_length(str_2) == 0) {
+    return(0)
+  }
+
+  # Calculate Soundex strings
+  soundex_1 = soundex_code(str_1)
+  soundex_2 = soundex_code(str_2)
+
+  if (soundex_1 == soundex_2) {
+    result = 4
+  } else {
+    if (str_sub(soundex_1, 1, 1) == str_sub(soundex_2, 1, 1)) {
+      result = 1
+    } else {
+      result = 0
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 4)))) {
+      return(3)
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 3, 4)))) {
+      return(2)
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 3)))) {
+      return(2)
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 2)))) {
+      result = result + 1
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 3, 3)))) {
+      result = result + 1
+    }
+
+    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 4, 4)))) {
+      result = result + 1
+    }
+  }
+
+  return(result)
+}

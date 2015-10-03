@@ -2,7 +2,7 @@
 % Please edit documentation in R/soundex.R
 \name{soundex_code}
 \alias{soundex_code}
-\title{Calculate the Soundex code for a string}
+\title{Calculate the Soundex code}
 \usage{
 soundex_code(string)
 }

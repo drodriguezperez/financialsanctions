@@ -30,6 +30,7 @@ test_that("calculation of Levenshtein distance", {
   expect_that(levenshtein_distance('saturday', 'sunday'),   equals(3))
   expect_that(levenshtein_distance('source',   'target'),   equals(5))
   expect_that(levenshtein_distance('ABCVWXYZ', 'CABVWXYZ'), equals(2))
+  expect_that(levenshtein_distance('saturday', 'saturday'), equals(0))
 })
 
 test_that("calculation of Levenshtein similarity", {
@@ -39,4 +40,5 @@ test_that("calculation of Levenshtein similarity", {
   expect_that(levenshtein('saturday', 'sunday'),   equals(0.625000000, tolerance = MAXERROR))
   expect_that(levenshtein('source',   'target'),   equals(0.166666667, tolerance = MAXERROR))
   expect_that(levenshtein('ABCVWXYZ', 'CABVWXYZ'), equals(0.750000000, tolerance = MAXERROR))
+  expect_that(levenshtein('saturday', 'saturday'), equals(1.000000000, tolerance = MAXERROR))
 })

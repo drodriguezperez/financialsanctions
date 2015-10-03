@@ -30,4 +30,5 @@ test_that("calculation of Jaro-Winkler distances", {
   expect_that(jaroWinkler('saturday', 'sunday'),   equals(0.777500000, tolerance = MAXERROR))
   expect_that(jaroWinkler('source',   'target'),   equals(0.555555556, tolerance = MAXERROR))
   expect_that(jaroWinkler('ABCVWXYZ', 'CABVWXYZ'), equals(0.958333333, tolerance = MAXERROR))
+  expect_that(jaroWinkler('saturday', 'saturday'), equals(1.000000000, tolerance = MAXERROR))
 })
