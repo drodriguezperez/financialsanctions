@@ -37,6 +37,12 @@
 #' @rdname sorensenDice
 #' @export sorensenDice
 sorensenDice <- function(str_1, str_2) {
+  UseMethod("sorensenDice")
+}
+
+#' @method sorensenDice default
+#' @export
+sorensenDice.default <- function(str_1, str_2) {
   bigram_1 <- bigrams(tolower(str_1))
   bigram_2 <- bigrams(tolower(str_2))
   result   <- 2 * sum(bigram_1 %in% bigram_2) /
@@ -70,6 +76,9 @@ bigrams <- function(string) {
         result <- c(result, str_i)
     }
   }
+
+  if (!is.null(result))
+    class(result) <- c('bigrams', class(result))
 
   return(result)
 }

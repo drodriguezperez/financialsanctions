@@ -23,20 +23,39 @@ context("Sorensen-Dice coefficient tests")
 
 MAXERROR <- 1e-8
 
+test_that("bigrams of class", {
+  text_bigram <- bigrams('kitten')
+
+  expect_is(text_bigram, 'bigrams')
+  expect_is(text_bigram, 'character')
+})
+
 test_that("bigrams of strings", {
-  expect_that(bigrams(''),          equals(c()))
-  expect_that(bigrams('car'),       equals(c('ca', 'ar')))
-  expect_that(bigrams('cat'),       equals(c('ca', 'at')))
-  expect_that(bigrams('kitten'),    equals(c('ki', 'it', 'tt', 'te', 'en')))
-  expect_that(bigrams('Gutierrez'), equals(c('Gu', 'ut', 'ti', 'ie', 'er' ,'rr', 're', 'ez')))
+  expect_identical(bigrams(''), c())
+
+  sol        <- c('ca', 'ar')
+  class(sol) <- c('bigrams', 'character')
+  expect_identical(bigrams('car'), sol)
+
+  sol        <- c('ca', 'at')
+  class(sol) <- c('bigrams', 'character')
+  expect_identical(bigrams('cat'), sol)
+
+  sol        <- c('ki', 'it', 'tt', 'te', 'en')
+  class(sol) <- c('bigrams', 'character')
+  expect_identical(bigrams('kitten'), sol)
+
+  sol        <- c('Gu', 'ut', 'ti', 'ie', 'er' ,'rr', 're', 'ez')
+  class(sol) <- c('bigrams', 'character')
+  expect_identical(bigrams('Gutierrez'), sol)
 })
 
 test_that("calculation of Sorensen-Dice distance", {
-  expect_that(sorensenDice('car',      ''),         equals(0.000000000, tolerance = MAXERROR))
-  expect_that(sorensenDice('car',      'cat'),      equals(0.500000000, tolerance = MAXERROR))
-  expect_that(sorensenDice('kitten',   'sitting'),  equals(0.363636364, tolerance = MAXERROR))
-  expect_that(sorensenDice('saturday', 'sunday'),   equals(0.333333333, tolerance = MAXERROR))
-  expect_that(sorensenDice('source',   'target'),   equals(0.000000000, tolerance = MAXERROR))
-  expect_that(sorensenDice('ABCVWXYZ', 'CABVWXYZ'), equals(0.714285714, tolerance = MAXERROR))
-  expect_that(sorensenDice('saturday', 'saturday'), equals(1.000000000, tolerance = MAXERROR))
+  expect_equal(sorensenDice('car',      ''),         0.000000000, tolerance = MAXERROR)
+  expect_equal(sorensenDice('car',      'cat'),      0.500000000, tolerance = MAXERROR)
+  expect_equal(sorensenDice('kitten',   'sitting'),  0.363636364, tolerance = MAXERROR)
+  expect_equal(sorensenDice('saturday', 'sunday'),   0.333333333, tolerance = MAXERROR)
+  expect_equal(sorensenDice('source',   'target'),   0.000000000, tolerance = MAXERROR)
+  expect_equal(sorensenDice('ABCVWXYZ', 'CABVWXYZ'), 0.714285714, tolerance = MAXERROR)
+  expect_equal(sorensenDice('saturday', 'saturday'), 1.000000000, tolerance = MAXERROR)
 })
