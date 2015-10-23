@@ -23,11 +23,21 @@ context("Sorensen-Dice coefficient tests")
 
 MAXERROR <- 1e-8
 
-test_that("bigrams of class", {
+test_that("bigrams returns a bigram class", {
   text_bigram <- bigrams('kitten')
 
   expect_is(text_bigram, 'bigrams')
   expect_is(text_bigram, 'character')
+})
+
+test_that("arrays of bigrams", {
+  text_bigram        <- bigrams(c('car', 'cat', 'kitten'))
+
+  sol_bigram        <- list(bigrams('car'), bigrams('cat'), bigrams('kitten'))
+  class(sol_bigram) <- c('bigrams', class(sol_bigram))
+
+  expect_equal(length(text_bigram), 3)
+  expect_identical(text_bigram, sol_bigram)
 })
 
 test_that("bigrams of strings", {
@@ -45,7 +55,7 @@ test_that("bigrams of strings", {
   class(sol) <- c('bigrams', 'character')
   expect_identical(bigrams('kitten'), sol)
 
-  sol        <- c('Gu', 'ut', 'ti', 'ie', 'er' ,'rr', 're', 'ez')
+  sol        <- c('gu', 'ut', 'ti', 'ie', 'er' ,'rr', 're', 'ez')
   class(sol) <- c('bigrams', 'character')
   expect_identical(bigrams('Gutierrez'), sol)
 })
@@ -58,4 +68,12 @@ test_that("calculation of Sorensen-Dice distance", {
   expect_equal(sorensenDice('source',   'target'),   0.000000000, tolerance = MAXERROR)
   expect_equal(sorensenDice('ABCVWXYZ', 'CABVWXYZ'), 0.714285714, tolerance = MAXERROR)
   expect_equal(sorensenDice('saturday', 'saturday'), 1.000000000, tolerance = MAXERROR)
+})
+
+
+test_that("calculation of Sorensen-Dice distance of an array", {
+  text_bigram <- bigrams(c('car', 'cat', 'kitten', 'source'))
+  distances   <- c(1, 0.5, 0, 0)
+
+  expect_equal(sorensenDice(text_bigram, 'car'), distances)
 })

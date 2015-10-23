@@ -37,16 +37,31 @@
 #' @rdname sorensenDice
 #' @export sorensenDice
 sorensenDice <- function(str_1, str_2) {
-  UseMethod("sorensenDice")
-}
+  if (!inherits(str_1, 'bigrams')) {
+    bigram_1 <- bigrams(str_1)
+  } else {
+    bigram_1 <- str_1
+  }
 
-#' @method sorensenDice default
-#' @export
-sorensenDice.default <- function(str_1, str_2) {
-  bigram_1 <- bigrams(tolower(str_1))
-  bigram_2 <- bigrams(tolower(str_2))
-  result   <- 2 * sum(bigram_1 %in% bigram_2) /
-    (length(bigram_1) + length(bigram_2))
+  if (!inherits(str_2, 'bigrams')) {
+    bigram_2 <- bigrams(str_2)
+  } else {
+    bigram_2 <- str_2
+  }
+
+  result <- NULL
+
+  if (is.list(bigram_1)) {
+    result <- rep(0, length(bigram_1))
+
+    for (i in 1:length(bigram_1)) {
+      result[i] <- 2 * sum(bigram_1[[i]] %in% bigram_2) /
+        (length(bigram_1[[i]]) + length(bigram_2))
+    }
+  } else {
+    result <- 2 * sum(bigram_1 %in% bigram_2) /
+      (length(bigram_1) + length(bigram_2))
+  }
 
   return(result)
 }
@@ -67,13 +82,22 @@ sorensenDice.default <- function(str_1, str_2) {
 #' @rdname bigrams
 #' @export bigrams
 bigrams <- function(string) {
-  result <- c()
+  if (length(string) == 1) {
+    result <- c()
 
-  if (str_length(string) > 1) {
-    for (i in 2:str_length(string)) {
-      str_i  <- str_trim(str_sub(string, i - 1, i))
-      if (str_length(str_i) == 2)
-        result <- c(result, str_i)
+    string <- tolower(string)
+
+    if (str_length(string) > 1) {
+      for (i in 2:str_length(string)) {
+        str_i  <- str_trim(str_sub(string, i - 1, i))
+        if (str_length(str_i) == 2)
+          result <- c(result, str_i)
+      }
+    }
+  } else {
+    result <- list()
+    for (i in 1:length(string)) {
+      result[[i]] <- bigrams(string[i])
     }
   }
 
