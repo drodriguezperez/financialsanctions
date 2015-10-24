@@ -23,41 +23,121 @@ context("Soundex distance tests")
 
 MAXERROR <- 1e-8
 
+test_that("test Soundex class", {
+  text_soundex <- soundex_code('kitten')
+
+  expect_is(text_soundex, 'soundex')
+  expect_is(text_soundex, 'character')
+})
+
 test_that("calculation of Soundex code", {
-  expect_that(soundex_code(''),          is_null())
-  expect_that(soundex_code('Soundex'),   equals('S532'))
-  expect_that(soundex_code('car'),       equals('C600'))
-  expect_that(soundex_code('cat'),       equals('C300'))
-  expect_that(soundex_code('kitten'),    equals('K350'))
-  expect_that(soundex_code('sitting'),   equals('S352'))
-  expect_that(soundex_code('saturday'),  equals('S363'))
-  expect_that(soundex_code('sunday'),    equals('S530'))
-  expect_that(soundex_code('source'),    equals('S620'))
-  expect_that(soundex_code('target'),    equals('T623'))
-  expect_that(soundex_code('ABCVWXYZ'),  equals('A121'))
-  expect_that(soundex_code('CABVWXYZ'),  equals('C122'))
-  expect_that(soundex_code('Gutierrez'), equals('G362'))
-  expect_that(soundex_code('Pfister'),   equals('P236'))
-  expect_that(soundex_code('Jackson'),   equals('J250'))
-  expect_that(soundex_code('Tymczak'),   equals('T522'))
+  expect_null(soundex_code(c()))
+  expect_null(soundex_code(''))
+
+  sol        <- 'S532'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('Soundex'), sol)
+
+  sol        <- 'C600'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('car'), sol)
+
+  sol        <- 'C300'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('cat'), sol)
+
+  sol        <- 'K350'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('kitten'), sol)
+
+  sol        <- 'S352'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('sitting'), sol)
+
+  sol        <- 'S363'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('saturday'), sol)
+
+  sol        <- 'S530'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('sunday'), sol)
+
+  sol        <- 'S620'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('source'), sol)
+
+  sol        <- 'T623'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('target'), sol)
+
+  sol        <- 'A121'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('ABCVWXYZ'), sol)
+
+  sol        <- 'C122'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('CABVWXYZ'), sol)
+
+  sol        <- 'G362'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('Gutierrez'), sol)
+
+  sol        <- 'P236'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('Pfister'), sol)
+
+  sol        <- 'J250'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('Jackson'), sol)
+
+  sol        <- 'T522'
+  class(sol) <- c('soundex', 'character')
+  expect_identical(soundex_code('Tymczak'), sol)
+})
+
+test_that("calculation of Soundex diference using array", {
+  soundex_str <- c('cat', 'sitting', 'sunday', 'saturday')
+  soundex_val <- c(soundex_code('cat'), soundex_code('sitting'),
+                   soundex_code('sunday'), soundex_code('saturday'))
+
+  class(soundex_val) <- c('soundex', 'character')
+
+  expect_equal(soundex_code(soundex_str), soundex_val)
 })
 
 test_that("calculation of Soundex distance", {
-  expect_that(soundex_difference('car',      ''),         equals(0))
-  expect_that(soundex_difference('car',      'cat'),      equals(2))
-  expect_that(soundex_difference('kitten',   'sitting'),  equals(2))
-  expect_that(soundex_difference('saturday', 'sunday'),   equals(3))
-  expect_that(soundex_difference('source',   'target'),   equals(2))
-  expect_that(soundex_difference('ABCVWXYZ', 'CABVWXYZ'), equals(2))
-  expect_that(soundex_difference('saturday', 'saturday'), equals(4))
+  expect_null(soundex_difference(c(), 'cat'))
+  expect_null(soundex_difference('cat', c()))
+
+  expect_equal(soundex_difference('car',      ''),         0)
+  expect_equal(soundex_difference('car',      'cat'),      2)
+  expect_equal(soundex_difference('kitten',   'sitting'),  2)
+  expect_equal(soundex_difference('saturday', 'sunday'),   3)
+  expect_equal(soundex_difference('source',   'target'),   2)
+  expect_equal(soundex_difference('ABCVWXYZ', 'CABVWXYZ'), 2)
+  expect_equal(soundex_difference('saturday', 'saturday'), 4)
+})
+
+test_that("calculation of Soundex diference using array", {
+  soundex_str <- c('cat', 'sitting', 'sunday', 'saturday')
+  soundex_val <- c(2, 0, 1, 1)
+
+  expect_equal(soundex_difference(soundex_str, 'car'), soundex_val)
 })
 
 test_that("calculation of Soundex distance", {
-  expect_that(soundex('car',      ''),         equals(0.000000000, tolerance = MAXERROR))
-  expect_that(soundex('car',      'cat'),      equals(0.500000000, tolerance = MAXERROR))
-  expect_that(soundex('kitten',   'sitting'),  equals(0.500000000, tolerance = MAXERROR))
-  expect_that(soundex('saturday', 'sunday'),   equals(0.750000000, tolerance = MAXERROR))
-  expect_that(soundex('source',   'target'),   equals(0.500000000, tolerance = MAXERROR))
-  expect_that(soundex('ABCVWXYZ', 'CABVWXYZ'), equals(0.500000000, tolerance = MAXERROR))
-  expect_that(soundex('saturday', 'saturday'), equals(1.000000000, tolerance = MAXERROR))
+  expect_equal(soundex('car',      ''),         0.000000000, tolerance = MAXERROR)
+  expect_equal(soundex('car',      'cat'),      0.500000000, tolerance = MAXERROR)
+  expect_equal(soundex('kitten',   'sitting'),  0.500000000, tolerance = MAXERROR)
+  expect_equal(soundex('saturday', 'sunday'),   0.750000000, tolerance = MAXERROR)
+  expect_equal(soundex('source',   'target'),   0.500000000, tolerance = MAXERROR)
+  expect_equal(soundex('ABCVWXYZ', 'CABVWXYZ'), 0.500000000, tolerance = MAXERROR)
+  expect_equal(soundex('saturday', 'saturday'), 1.000000000, tolerance = MAXERROR)
+})
+
+test_that("calculation of Soundex distance using array", {
+  soundex_str <- c('cat', 'sitting', 'sunday', 'saturday')
+  soundex_val <- c(0.5, 0, 0.25, 0.25)
+
+  expect_equal(soundex(soundex_str, 'car'), soundex_val,  tolerance = MAXERROR)
 })

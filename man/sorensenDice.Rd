@@ -7,9 +7,9 @@
 sorensenDice(str_1, str_2)
 }
 \arguments{
-\item{str_1}{first string for calculating the distance}
+\item{str_1}{first string or bigrams for calculating the distance}
 
-\item{str_2}{second string for calculating the distance}
+\item{str_2}{second string or bigram for calculating the distance}
 }
 \value{
 the Sorensen-Dice distance between the specified strings

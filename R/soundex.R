@@ -23,7 +23,7 @@
 #'
 #' Calculate the Soundex code for a string
 #'
-#' @param string a string for calculating the code
+#' @param string a string or an array of strings for calculating the code
 #'
 #' @return the Soundex code
 #'
@@ -42,47 +42,61 @@
 #' @rdname soundex_code
 #' @export soundex_code
 soundex_code <- function(string) {
-  if (str_length(string) == 0) {
+  if (length(string) == 0) {
     return(NULL)
   }
 
-  string  <- toupper(string)
-  code    <- str_split(toupper(string), pattern = '')[[1]]
-  result  <- code[1]
+  result <- c()
+  string <- toupper(string)
 
-  for (i in str_length(string):1) {
-    str_i <- str_sub(string, i, i)
-
-    if (str_i %in% c('A', 'E', 'I', 'O', 'U')) {
-      code[i] <- ''
-    } else if (str_i %in% c('B', 'F', 'P', 'V')) {
-      code[i] <- '1'
-    } else if (str_i %in% c('C', 'G', 'J', 'K', 'Q', 'S', 'X', 'Z')) {
-      code[i] <- '2'
-    } else if (str_i %in% c('D', 'T')) {
-      code[i] <- '3'
-    } else if (str_i %in% c('L')) {
-      code[i] <- '4'
-    } else if (str_i %in% c('M', 'N')) {
-      code[i] <- '5'
-    } else if (str_i %in% c('R')) {
-      code[i] <- '6'
+  for (i in 1:length(string)) {
+    if (str_length(string[i]) == 0) {
+      sub_result <- NULL
+      break
     }
+
+    code      <- str_split(string[i], pattern = '')[[1]]
+    sub_result <- code[1]
+
+    for (j in str_length(string[i]):1) {
+      str_i <- str_sub(string[i], j, j)
+
+      if (str_i %in% c('A', 'E', 'I', 'O', 'U')) {
+        code[j] <- ''
+      } else if (str_i %in% c('B', 'F', 'P', 'V')) {
+        code[j] <- '1'
+      } else if (str_i %in% c('C', 'G', 'J', 'K', 'Q', 'S', 'X', 'Z')) {
+        code[j] <- '2'
+      } else if (str_i %in% c('D', 'T')) {
+        code[j] <- '3'
+      } else if (str_i %in% c('L')) {
+        code[j] <- '4'
+      } else if (str_i %in% c('M', 'N')) {
+        code[j] <- '5'
+      } else if (str_i %in% c('R')) {
+        code[j] <- '6'
+      }
+    }
+
+    for (j in 2:length(code)) {
+      if (code[j] != code[j - 1] && code[j] %in% c('1', '2', '3', '4', '5', '6')) {
+        sub_result <- paste(sub_result, code[j], sep = '')
+      }
+    }
+
+    if (str_length(sub_result) < 4)  {
+      for (j in str_length(sub_result):3) {
+        sub_result <- paste(sub_result, '0', sep = '')
+      }
+    }
+
+    result[i] <- str_sub(sub_result, 1, 4)
   }
 
-  for (i in 2:length(code)) {
-    if (code[i] != code[i - 1] && code[i] %in% c('1', '2', '3', '4', '5', '6')) {
-      result <- paste(result, code[i], sep = '')
-    }
-  }
+  if (!is.null(result))
+    class(result) <- c('soundex', class(result))
 
-  if (str_length(result) < 4)  {
-    for (i in str_length(result):3) {
-      result <- paste(result, '0', sep = '')
-    }
-  }
-
-  return(str_sub(result, 1, 4))
+  return(result)
 }
 
 #' Calculate the Soundex difference
@@ -107,6 +121,10 @@ soundex_code <- function(string) {
 #' @rdname soundex_difference
 #' @export soundex_difference
 soundex_difference <- function(str_1, str_2) {
+  if (length(str_1) == 0 || length(str_2) == 0) {
+    return(NULL)
+  }
+
   if (str_length(str_1) == 0 || str_length(str_2) == 0) {
     return(0)
   }
@@ -115,37 +133,44 @@ soundex_difference <- function(str_1, str_2) {
   soundex_1 = soundex_code(str_1)
   soundex_2 = soundex_code(str_2)
 
-  if (soundex_1 == soundex_2) {
-    result = 4
-  } else {
-    if (str_sub(soundex_1, 1, 1) == str_sub(soundex_2, 1, 1)) {
-      result = 1
+  result <- c()
+
+  for (i in 1:length(soundex_1)) {
+    if (soundex_1[i] == soundex_2) {
+      result[i] = 4
     } else {
-      result = 0
-    }
+      if (str_sub(soundex_1[i], 1, 1) == str_sub(soundex_2, 1, 1)) {
+        result = 1
+      } else {
+        result[i] = 0
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 4)))) {
-      return(3)
-    }
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 2, 4)))) {
+        result[i] = 3
+        next
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 3, 4)))) {
-      return(2)
-    }
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 3, 4)))) {
+        result[i] = 2
+        next
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 3)))) {
-      return(2)
-    }
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 2, 3)))) {
+        result[i] = 2
+        next
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 2, 2)))) {
-      result = result + 1
-    }
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 2, 2)))) {
+        result[i] = result[i] + 1
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 3, 3)))) {
-      result = result + 1
-    }
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 3, 3)))) {
+        result[i] = result[i] + 1
+      }
 
-    if (!is.na(str_match(soundex_2, str_sub(soundex_1, 4, 4)))) {
-      result = result + 1
+      if (!is.na(str_match(soundex_2, str_sub(soundex_1[i], 4, 4)))) {
+        result[i] = result[i] + 1
+      }
     }
   }
 

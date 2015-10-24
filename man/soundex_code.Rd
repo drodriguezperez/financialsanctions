@@ -7,7 +7,7 @@
 soundex_code(string)
 }
 \arguments{
-\item{string}{a string for calculating the code}
+\item{string}{a string or an array of strings for calculating the code}
 }
 \value{
 the Soundex code

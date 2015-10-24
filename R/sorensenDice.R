@@ -24,8 +24,8 @@
 #' Calculate Sorensen-Dice distance for two strings \code{str_1} and
 #' \code{str_2}
 #'
-#' @param str_1 first string for calculating the distance
-#' @param str_2 second string for calculating the distance
+#' @param str_1 first string or bigrams for calculating the distance
+#' @param str_2 second string or bigram for calculating the distance
 #'
 #' @return the Sorensen-Dice distance between the specified strings
 #'
