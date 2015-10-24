@@ -19,11 +19,47 @@
 ##  along with this program.  If not, see <http://www.gnu.org/licenses/>
 ##
 
+#' Soundex algorithm for the specified language
+#'
+#' Returns an object that can be used in the Soundex funtions to execute in
+#' different languages.
+#'
+#' @param lang the language code
+#'
+#' @return an object to be used in the Soundex funtions
+#'
+#' @details
+#' This function returns the soundex code algorithms for use in different
+#' languages. The languages currently supported are:
+#' \itemize{
+#'  \item{\code{en} English}
+#' }
+#'
+#' @examples
+#' algorithm <- soundex_algorithm(lang = 'en')
+#' soundex_code('Soundex', algorithm = algorithm)
+#'
+#' @author Daniel Rodriguez Perez
+#'
+#' @rdname soundex_algorithm
+#' @export soundex_algorithm
+soundex_algorithm <- function(lang = 'en') {
+  switch(tolower(lang),
+         en = list(' ' = c('A', 'E', 'I', 'O', 'U'),
+                   '1' = c('B', 'F', 'P', 'V'),
+                   '2' = c('C', 'G', 'J', 'K', 'Q', 'S', 'X', 'Z'),
+                   '3' = c('D', 'T'),
+                   '4' = c('L'),
+                   '5' = c('M', 'N'),
+                   '6' = c('R')))
+}
+
 #' Calculate the Soundex code
 #'
 #' Calculate the Soundex code for a string
 #'
 #' @param string a string or an array of strings for calculating the code
+#' @param algorithm object with the soundex algorithm
 #'
 #' @return the Soundex code
 #'
@@ -41,7 +77,7 @@
 #'
 #' @rdname soundex_code
 #' @export soundex_code
-soundex_code <- function(string) {
+soundex_code <- function(string, algorithm = soundex_algorithm('en')) {
   if (length(string) == 0) {
     return(NULL)
   }
@@ -58,25 +94,18 @@ soundex_code <- function(string) {
     code      <- str_split(string[i], pattern = '')[[1]]
     sub_result <- code[1]
 
-    for (j in str_length(string[i]):1) {
+    for (j in 1:str_length(string[i])) {
       str_i <- str_sub(string[i], j, j)
 
-      if (str_i %in% c('A', 'E', 'I', 'O', 'U')) {
-        code[j] <- ''
-      } else if (str_i %in% c('B', 'F', 'P', 'V')) {
-        code[j] <- '1'
-      } else if (str_i %in% c('C', 'G', 'J', 'K', 'Q', 'S', 'X', 'Z')) {
-        code[j] <- '2'
-      } else if (str_i %in% c('D', 'T')) {
-        code[j] <- '3'
-      } else if (str_i %in% c('L')) {
-        code[j] <- '4'
-      } else if (str_i %in% c('M', 'N')) {
-        code[j] <- '5'
-      } else if (str_i %in% c('R')) {
-        code[j] <- '6'
+      for (k in 1:length(algorithm)) {
+        if (str_i %in% algorithm[[k]]) {
+          code[j] <- names(algorithm[k])
+          break
+        }
       }
     }
+
+    code <- str_replace(code, ' ', '')
 
     for (j in 2:length(code)) {
       if (code[j] != code[j - 1] && code[j] %in% c('1', '2', '3', '4', '5', '6')) {
@@ -105,6 +134,7 @@ soundex_code <- function(string) {
 #'
 #' @param str_1 first string for calculating the distance
 #' @param str_2 second string for calculating the distance
+#' @param algorithm object with the soundex algorithm
 #'
 #' @return an integer that indicates the difference between the Soundex codes
 #'
@@ -120,7 +150,7 @@ soundex_code <- function(string) {
 #'
 #' @rdname soundex_difference
 #' @export soundex_difference
-soundex_difference <- function(str_1, str_2) {
+soundex_difference <- function(str_1, str_2, algorithm = soundex_algorithm('en')) {
   if (length(str_1) == 0 || length(str_2) == 0) {
     return(NULL)
   }
@@ -130,8 +160,8 @@ soundex_difference <- function(str_1, str_2) {
   }
 
   # Calculate Soundex strings
-  soundex_1 = soundex_code(str_1)
-  soundex_2 = soundex_code(str_2)
+  soundex_1 = soundex_code(str_1, algorithm = algorithm)
+  soundex_2 = soundex_code(str_2, algorithm = algorithm)
 
   result <- c()
 
@@ -184,6 +214,7 @@ soundex_difference <- function(str_1, str_2) {
 #'
 #' @param str_1 first string for calculating the similarity
 #' @param str_2 second string for calculating the similarity
+#' @param algorithm object with the soundex algorithm
 #'
 #' @return the similarity based on the Soundex distance between the specified
 #'         strings
@@ -195,6 +226,6 @@ soundex_difference <- function(str_1, str_2) {
 #'
 #' @rdname soundex
 #' @export soundex
-soundex <- function(str_1, str_2) {
-  return(soundex_difference(str_1, str_2) / 4)
+soundex <- function(str_1, str_2, algorithm = soundex_algorithm('en')) {
+  return(soundex_difference(str_1, str_2, algorithm = algorithm) / 4)
 }

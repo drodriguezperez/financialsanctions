@@ -4,12 +4,14 @@
 \alias{soundex}
 \title{Calculate the similarity based on the Soundex distance}
 \usage{
-soundex(str_1, str_2)
+soundex(str_1, str_2, algorithm = soundex_algorithm("en"))
 }
 \arguments{
 \item{str_1}{first string for calculating the similarity}
 
 \item{str_2}{second string for calculating the similarity}
+
+\item{algorithm}{object with the soundex algorithm}
 }
 \value{
 the similarity based on the Soundex distance between the specified

@@ -4,12 +4,14 @@
 \alias{soundex_difference}
 \title{Calculate the Soundex difference}
 \usage{
-soundex_difference(str_1, str_2)
+soundex_difference(str_1, str_2, algorithm = soundex_algorithm("en"))
 }
 \arguments{
 \item{str_1}{first string for calculating the distance}
 
 \item{str_2}{second string for calculating the distance}
+
+\item{algorithm}{object with the soundex algorithm}
 }
 \value{
 an integer that indicates the difference between the Soundex codes

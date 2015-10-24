@@ -4,10 +4,12 @@
 \alias{soundex_code}
 \title{Calculate the Soundex code}
 \usage{
-soundex_code(string)
+soundex_code(string, algorithm = soundex_algorithm("en"))
 }
 \arguments{
 \item{string}{a string or an array of strings for calculating the code}
+
+\item{algorithm}{object with the soundex algorithm}
 }
 \value{
 the Soundex code
