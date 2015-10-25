@@ -105,8 +105,6 @@ soundex_code <- function(string, algorithm = soundex_algorithm('en')) {
       }
     }
 
-    code <- str_replace(code, ' ', '')
-
     for (j in 2:length(code)) {
       if (code[j] != code[j - 1] && code[j] %in% c('1', '2', '3', '4', '5', '6')) {
         sub_result <- paste(sub_result, code[j], sep = '')
