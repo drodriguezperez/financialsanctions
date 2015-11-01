@@ -6,9 +6,12 @@ Date: 2015-10-03
 Author: Daniel Rodriguez Perez
 Maintainer: Daniel Rodriguez <daniel.rodriguez.perez@gmail.com>
 Description: This package allows download sanctions lists from different
-             sources and performs searches for coincidences using different
-             metrics.
+    sources and performs searches for coincidences using different
+    metrics.
 License: GPL-3
-Depends: stringr
-Suggests: testthat
+Depends:
+    stringr
+Suggests:
+    testthat
 LazyData: TRUE
+RoxygenNote: 5.0.0
